@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Description
 
-This package contains functions that provide a greedy functional quantization and also the optimal grid (one shot algorithm). See my paper for more details: **Data-driven stochastic inversion via functional quantization** [<https://link.springer.com/article/10.1007/s11222-019-09888-8>].
+This package contains functions that provide a greedy functional quantization and also the optimal grid (see my paper for more details: **Data-driven stochastic inversion via functional quantization** [<https://link.springer.com/article/10.1007/s11222-019-09888-8>]).
 
 ## R functions
 
@@ -220,7 +220,7 @@ StochGradient <- function(data,mKL,size)
 }
 GFQ <- function(data,mKL,size,method,deepstart=TRUE)
 {
-  support <- FPCA(data,mKL,scale=TRUE)$Coeff
+  support <- Karhunen_Loeve(data,mKL,scale=TRUE)$Coeff
   if(method == 'L2')
   {
     DESIGN <- NULL
@@ -283,7 +283,7 @@ GFQ <- function(data,mKL,size,method,deepstart=TRUE)
   for(q in 1:size) weight[q] <- length(which(clusters==q))/dim(data)[1]
   return(list(data=data,quantizer=data[DESIGN,],weights=weight,index=DESIGN))
 }
-FPCA <- function(data,ncomp,scale=FALSE)
+Karhunen_Loeve <- function(data,mKL,scale=TRUE)
 {
   dataa <- data
   MEAN <- apply(data,2,mean)
@@ -291,30 +291,14 @@ FPCA <- function(data,ncomp,scale=FALSE)
   else {data <- (data)}
   n <- nrow(data )
   M <- ncol(data )
-  
   COVARIANCE <- t(data ) %*% (data )/n
-  
   ei=eigen(COVARIANCE, symmetric = TRUE)
-  q <- ncomp
+  q <- mKL
   EIGENVECTORS <- matrix(ei$vectors[, 1:q],ncol=q)
   EIGENVALUES <- ei$values[1:q]
   VAR <- sum(ei$values[1:q])/sum(ei$values)
   COMPONENT1 <- data %*% EIGENVECTORS
-  donnee <- matrix(0,ncol=M ,nrow=n)
-  for(i in 1:n)
-  {
-    test <- matrix(0,ncol=q,nrow=M)
-    for(j in 1:q)
-    {
-      test[,j] <- COMPONENT1[i,j] * (EIGENVECTORS[,j]  )
-    }
-    donnee[i,] <- apply(test,1,sum) + MEAN
-  }
-  
-  
-  return(list(Data = (dataa), Appro = donnee, eigenvectors = EIGENVECTORS, 
-              Coeff = COMPONENT1, eigenvalues = EIGENVALUES,var=VAR,
-              vartot=ei$values,center = MEAN,t=ei$values))
+  return(list(Coeff=COMPONENT1,ExplainedVar=VAR,center=MEAN,eigenfunction=EIGENVECTORS))
 }
 BM <- function(N=1000,M=1,x0=0,t0=0,T=1,Dt=NULL)
 {
@@ -332,7 +316,25 @@ You can also embed plots, for example:
 ```{r echo=TRUE}
 data <- t(BM(N = 200 - 1, M = 300))
 size <- 3
+quant <- CVT(data,size,iter=22)
+```
+```{r echo=FALSE}
+matplot(t(quant$data),type='l',col='grey',xlim=c(0,200),
+        xlab="Time (s)",ylab="Functional output",main="Functional Quantization via Centroidal Voronoi Tesselation (CVT)")
+for(i in 1:size) lines(quant$quantizer[i,],col=i,lwd=3)
+```
+
+```{r echo=TRUE}
 mKL <- 2
+quant <- StochGradient(data,mKL,size)
+```
+```{r echo=FALSE}
+matplot(t(quant$data),type='l',col='grey',xlim=c(0,200),
+        xlab="Time (s)",ylab="Functional output",main="Functional Quantization via with Stochastic Gradient method")
+for(i in 1:size) lines(quant$quantizer[i,],col=i,lwd=3)
+```
+
+```{r echo=TRUE}
 quant <- GFQ(data,mKL,size,method="maximin",deepstart=TRUE)
 ```
 ```{r echo=FALSE}
@@ -346,10 +348,9 @@ for(i in 1:size)  text(250,quant$quantizer[i,200],labels=paste("weight[",i,"]=",
 ```{r echo=TRUE}
 quant <- GFQ(data,mKL,size,method="L2",deepstart=TRUE)
 ```
-
 ```{r echo=FALSE}
 matplot(t(quant$data),type='l',col='grey',xlim=c(0,300),
-        xlab="Time (s)",ylab="Functional output",main="Greedy Functional Quantization via L2 method")
+        xlab="Time (s)",ylab="Functional output",main="Greedy Functional Quantization based on the distorsion error")
 for(i in 1:size) lines(quant$quantizer[i,],col=i,lwd=3)
 for(i in 1:size)  points(200,quant$quantizer[i,200],pch=19,col=i)
 for(i in 1:size)  text(250,quant$quantizer[i,200],labels=paste("weight[",i,"]=",round(quant$weights[i],3),sep=""),col=i)

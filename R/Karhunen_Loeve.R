@@ -1,5 +1,4 @@
-Karhunen_Loeve <-
-function(data,mKL,scale=TRUE)
+Karhunen_Loeve <- function(data,mKL,scale=TRUE)
 {
   dataa <- data
   MEAN <- apply(data,2,mean)
