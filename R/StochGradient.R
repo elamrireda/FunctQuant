@@ -1,5 +1,4 @@
-StochGradient <-
-function(data,mKL,size)
+StochGradient <- function(data,mKL,size)
 {
   choice.grid_Reda <- function(X, N, ng=1, p = 2) {
     if (!is.numeric(X))

@@ -1,5 +1,4 @@
-CVT <-
-function(data,size,iter=22)
+CVT <- function(data,size,iter=22)
 {
   Nsim <- dim(data)[1]
   discretization <- dim(data)[2]
