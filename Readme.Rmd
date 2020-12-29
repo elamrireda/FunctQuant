@@ -1,7 +1,7 @@
 ---
 title: "FunctQuant R Package"
 author: "Reda El Amri"
-date: "2018-02-28"
+date: "2018-02-27"
 output: github_document
   #html_document: default
   #pdf_document: default

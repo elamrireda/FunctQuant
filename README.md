@@ -1,7 +1,7 @@
 FunctQuant R Package
 ================
 Reda El Amri
-2018-02-28
+2018-02-27
 
 ## Description
 
