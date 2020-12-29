@@ -5,11 +5,11 @@ Reda El Amri
 
 ## Description
 
-This package contains functions that provide a greedy functional quantization and also the optimal grid (see my paper for more details: **Data-driven stochastic inversion via functional quantization** \[<https://link.springer.com/article/10.1007/s11222-019-09888-8>\]).
+This package contains functions that provide a greedy functional quantization and also the optimal grid (see my paper for more details <https://link.springer.com/article/10.1007/s11222-019-09888-8>).
 
-## R functions
+## R funtions
 
-You can also embed plots, for example:
+Data-driven functional quantization with different approaches
 
 ``` r
 data <- t(BM(N = 200 - 1, M = 300))

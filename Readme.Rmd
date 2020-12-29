@@ -13,9 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Description
 
-This package contains functions that provide a greedy functional quantization and also the optimal grid (see my paper for more details: **Data-driven stochastic inversion via functional quantization** [<https://link.springer.com/article/10.1007/s11222-019-09888-8>]).
+This package contains functions that provide a greedy functional quantization and also the optimal grid (see my paper for more details <https://link.springer.com/article/10.1007/s11222-019-09888-8>).
 
-## R functions
+## R funtions
 
 ```{r echo=FALSE}
 CVT <- function(data,size,iter=22)
@@ -310,8 +310,7 @@ BM <- function(N=1000,M=1,x0=0,t0=0,T=1,Dt=NULL)
   return(X)
 }
 ```
-
-You can also embed plots, for example:
+Data-driven functional quantization with different approaches
 
 ```{r echo=TRUE}
 data <- t(BM(N = 200 - 1, M = 300))
@@ -330,7 +329,7 @@ quant <- StochGradient(data,mKL,size)
 ```
 ```{r echo=FALSE}
 matplot(t(quant$data),type='l',col='grey',xlim=c(0,200),
-        xlab="Time (s)",ylab="Functional output",main="Functional Quantization via with Stochastic Gradient method")
+        xlab="Time (s)",ylab="Functional output",main="Functional Quantization via Stochastic Gradient method")
 for(i in 1:size) lines(quant$quantizer[i,],col=i,lwd=3)
 ```
 
