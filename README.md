@@ -1,15 +1,13 @@
 FunctQuant R Package
 ================
 Reda El Amri
-28/12/2020
+2018-02-28
 
 ## Description
 
 This package contains functions that provide a greedy functional quantization and also the optimal grid (one shot algorithm). See my paper for more details: **Data-driven stochastic inversion via functional quantization** \[<https://link.springer.com/article/10.1007/s11222-019-09888-8>\].
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-## Including Plots
+## R functions
 
 You can also embed plots, for example:
 
